@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class ContactMessageMapper {
 
     //POJO  -->  DTO
-    public ContactMessageResponse contactMessagetoResponse(ContactMessage contactMessage){
+    public  ContactMessageResponse contactMessagetoResponse(ContactMessage contactMessage){
         return ContactMessageResponse.builder()
                 .name(contactMessage.getName())
                 .subject(contactMessage.getSubject())
@@ -32,6 +32,7 @@ public class ContactMessageMapper {
                 .dateTime(LocalDateTime.now())
                 .build();
     }
+
 
 
 }

@@ -4,50 +4,109 @@ import com.project.contactmessage.dto.ContactMessageRequest;
 import com.project.contactmessage.dto.ContactMessageResponse;
 import com.project.contactmessage.entity.ContactMessage;
 import com.project.contactmessage.mapper.ContactMessageMapper;
+import com.project.contactmessage.messages.Messages;
 import com.project.contactmessage.repository.ContactMessageRepository;
+import com.project.exception.ConflictException;
+import com.project.exception.ResourceNotFoundException;
 import com.project.payload.response.business.ResponseMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
 public class ContactMessageService {
 
     private final ContactMessageRepository contactMessageRepository;
-    private final ContactMessageMapper createContactMessage;
+    private final ContactMessageMapper contactMessageMapper;
 
     public ResponseMessage<ContactMessageResponse> save(ContactMessageRequest contactMessageRequest) {
 
-        ContactMessage contactMessage = createContactMessage.requesttoContactMessage(contactMessageRequest);
-        ContactMessage savedContactMessage = contactMessageRepository.save(contactMessage);
+        ContactMessage contactMessage = contactMessageMapper.requesttoContactMessage(contactMessageRequest);
+        ContactMessage savedData = contactMessageRepository.save(contactMessage);
+
         return ResponseMessage.<ContactMessageResponse>builder()
                 .message("Contact Message Created Successfully")
-                .httpStatus(HttpStatus.CREATED)
-                .object(createContactMessage.contactMessagetoResponse(savedContactMessage))
+                .httpStatus(HttpStatus.CREATED) // 201
+                .object(contactMessageMapper.contactMessagetoResponse(savedData))
                 .build();
+    }
 
+    public Page<ContactMessageResponse> getAll(int page, int size, String sort, String type) {
+
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
+        if(Objects.equals(type, "desc")){
+            pageable = PageRequest.of(page,size, Sort.by(sort).descending());
+        }
+
+        return contactMessageRepository.findAll(pageable).map(contactMessageMapper::contactMessagetoResponse);
+    }
+
+    public Page<ContactMessageResponse> searchByEmail(String email, int page, int size, String sort, String type) {
+
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
+        if(Objects.equals(type, "desc")){
+            pageable = PageRequest.of(page,size, Sort.by(sort).descending());
+        }
+
+        return contactMessageRepository.findByEmailEquals(email, pageable).
+                map((Function<? super ContactMessage, ? extends ContactMessageResponse>) contactMessageMapper::contactMessagetoResponse);
+    }
+
+    public String deleteById(Long id) {
+        getContactMessageById(id);
+        contactMessageRepository.deleteById(id);
+        return Messages.CONTACT_MESSAGE_DELETED_SUCCESSFULLY;
+    }
+
+    public ContactMessage getContactMessageById(Long id){
+        return contactMessageRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException(Messages.NOT_FOUND_MESSAGE));
+    }
+
+    public Page<ContactMessageResponse> searchBySubject(String subject, int page, int size, String sort, String type) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
+        if (Objects.equals(type, "desc")) {
+            pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        }
+        return contactMessageRepository.findBySubjectEquals(subject, pageable). // Derived
+                map(contactMessageMapper::contactMessagetoResponse);
+    }
+
+    public List<ContactMessage> searchBetweenDates(String beginDateString, String endDateString) {
+
+        try {
+            LocalDate beginDate = LocalDate.parse(beginDateString);
+            LocalDate endDate = LocalDate.parse(endDateString);
+            return contactMessageRepository.findMessagesBetweenDates(beginDate, endDate);
+        } catch (DateTimeParseException e) {
+            throw new ConflictException(Messages.WRONG_DATE_MESSAGE);
+        }
     }
 
 
-    // Not: ******************************************** getAllByPage ***************************************
+    public List<ContactMessage> searchBetweenTimes(String startHourString, String startMinuteString, String endHourString, String endMinuteString) {
 
-    // Not: ************************************* searchByEmailByPage ***************************************
+        try {
+            int startHour = Integer.parseInt(startHourString);
+            int startMinute = Integer.parseInt(startMinuteString);
+            int endHour = Integer.parseInt(endHourString);
+            int endMinute = Integer.parseInt(endMinuteString);
 
-    // Not: *************************************** searchBySubjectByPage ***************************************
-
-    // Not: searchByDateBetween ***************************************
-
-    // Not: searchByTimeBetween ***************************************
-
-    // Not: *********************************** deleteByIdParam ***************************************
-
-    // Not: ***************************************** deleteById ***************************************
-
-    // Not: *********************************** getByIdWithParam ***************************************
-
-    // Not: ************************************ getByIdWithPath ***************************************
-
-
-
+            return contactMessageRepository.findMessagesBetweenTimes(startHour,startMinute,endHour,endMinute);
+        } catch (NumberFormatException e) {
+            throw new ConflictException(Messages.WRONG_TIME_MESSAGE);
+        }
+    }
 }
