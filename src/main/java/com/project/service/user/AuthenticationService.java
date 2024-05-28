@@ -38,28 +38,28 @@ public class AuthenticationService {
     public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest) {
 
         //Gelen request icindeki username ve password alinir
-        String username= loginRequest.getUsername();
-        String password= loginRequest.getPassword();
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
 
         //authenticationManager uzerinden kullaniciyi valide ediyoruz
-        Authentication authentication=
+        Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
 
         //valide edilen kullaniciyi Context e atiyoruz
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         //JWT Token olusturuyoruz
-        String token = "Bearer "+ jwtUtils.generateJwtToken(authentication);
+        String token = "Bearer " + jwtUtils.generateJwtToken(authentication);
 
         //login islemi gerceklestirilen kullaniciya ulasiyoruz
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         //Response olarak login islemini yapan kullaniciyi donecegimiz gerekli fieldlari setliyoruz
         //GrantedAuthority turundeki role yapisini String turune ceviriyoruz
-        Set<String> roles = userDetails.getAuthorities().
-                stream().
-                map(GrantedAuthority::getAuthority).
-                collect(Collectors.toSet());
+        Set<String> roles = userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
 
         //bir kullanicinin birden fazla rolu olmayacagi icin ilk indexli elemani aliyoruz
         Optional<String> role = roles.stream().findFirst();
@@ -89,17 +89,18 @@ public class AuthenticationService {
         User user = userRepository.findByUsername(userName);
 
         // Builtin attribute: Datalarının Değişmesi istenmeyen bir objenin builtIn değeri true olur --> !! burayi sor!!
-        if (Boolean.TRUE.equals(user.getBuilt_in())){ // null degerleriyle calisirken guvenli bir yontemdir. Boolean.TRUE.equals
+        if(Boolean.TRUE.equals(user.getBuilt_in())) { // null değerleriyle çalışırken güvenli bir yöntemdir. Boolean.TRUE.equals
             throw new BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
         }
 
         // Eski password bilgisi dogru mu kontrolu yapiyoruz
-        if (!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword())){
+        if(!passwordEncoder.matches(updatePasswordRequest.getOldPassword(),user.getPassword())) {
             throw new BadRequestException(ErrorMessages.PASSWORD_NOT_MATCHED);
         }
 
         //yeni sifre hashlenerek kaydediliyor
-        String hashedPassword = passwordEncoder.encode(updatePasswordRequest.getNewPassword());
+        String hashedPassword=  passwordEncoder.encode(updatePasswordRequest.getNewPassword());
+
         user.setPassword(hashedPassword);
         userRepository.save(user);
 
