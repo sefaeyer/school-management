@@ -2,6 +2,7 @@ package com.project.payload.messages;
 
 public class ErrorMessages {
 
+
     private ErrorMessages(){
 
     }
@@ -14,4 +15,7 @@ public class ErrorMessages {
     public static final String ALREADY_REGISTER_MESSAGE_EMAIL = "Error: User with email %s already registered" ;
 
     public static final String ROLE_NOT_FOUND = "There is no role like that, check the database" ;
+
+    public static final String USER_NOT_FOUND = "Error: User with id : %s not found" ;
+
 }

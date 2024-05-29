@@ -2,7 +2,9 @@ package com.project.service.user;
 
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.RoleType;
+import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.UserMapper;
+import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.user.UserRequest;
 import com.project.payload.response.business.ResponseMessage;
@@ -10,6 +12,11 @@ import com.project.payload.response.user.UserResponse;
 import com.project.repository.user.UserRepository;
 import com.project.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +66,35 @@ public class UserService {
                 .object(userMapper.mapUserToUserResponse(savedUser))
                 .build();
     }
+
+    public Page<UserResponse> getAllAdminOrDeanOrViceDeanByPage(int page, int size, String sort, String type, String userRole) {
+
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
+        if(Objects.equals(type, "desc")){
+            pageable = PageRequest.of(page,size, Sort.by(sort).descending());
+        }
+        return userRepository.findByUserRoleEquals(userRole, pageable).
+                map(userMapper::mapUserToUserResponse);
+
+
+    }
+
+    public UserResponse getUserById(Long id) {
+        return userRepository.findById(id).
+                map(userMapper::mapUserToUserResponse).
+                orElseThrow(()-> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+    }
+
+    public ResponseMessage<String> deleteUser(Long id) {
+        getUserById(id);
+        userRepository.deleteById(id);
+        return ResponseMessage.<String>builder()
+                .object(null)
+                .message(SuccessMessages.USER_DELETE)
+                .httpStatus(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+
 
 }
