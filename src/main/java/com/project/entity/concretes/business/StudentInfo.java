@@ -20,10 +20,9 @@ public class StudentInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id; // UUID
 
-    private Integer absentee; //yoklama bilg
+    private Integer absentee; // yoklama bilgisi
 
     private Double midtermExam;
 
@@ -34,13 +33,13 @@ public class StudentInfo {
     private String infoNote;
 
     @Enumerated(EnumType.STRING)
-    private Note letterGrade; // ENUM olmak zorunda  AA Aa aa aA Merhaba
+    private Note letterGrade; // AA , aa , Aa , aA , Ax , Merhaba
 
-    @ManyToOne
+    @ManyToOne // 1 ogretmen --> 100 ogrenci
     @JsonIgnore
     private User teacher;
 
-    @ManyToOne
+    @ManyToOne // 1 ogrenci aldigi ders sayisi kadar studentInfo'su vardir
     @JsonIgnore
     private User student;
 
@@ -49,6 +48,4 @@ public class StudentInfo {
 
     @OneToOne
     private EducationTerm educationTerm;
-
-
 }

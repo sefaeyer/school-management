@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-@SuperBuilder // bu anotasyon oncesinde, SuperBuilder in cozdugu sorun nasil cozuluyordu
+@SuperBuilder // Odev : bu anotazyon oncesinde , @SuperBuilder in cozdugu sorun nasil cozuluyordu.
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -61,15 +61,6 @@ public abstract class AbstractUserRequest {
     @Size(min=5, max=50 , message = "Your email should be between 5 and 50 chars")
     private String email;
 }
-
-
-
-
-
-
-
-
-
 
 
 

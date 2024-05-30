@@ -28,81 +28,63 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository userRepository;
-    public final AuthenticationManager authenticationManager;
     public final JwtUtils jwtUtils;
+    public final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-
-    // odev  -->   yukaridaki methodun service kismi yazilacak
-    public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest) {
-
-        //Gelen request icindeki username ve password alinir
+    // Not: Login() *************************************************
+    public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest){
+        //!!! Gelen requestin icinden kullanici adi ve parola bilgisi aliniyor
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
-
-        //authenticationManager uzerinden kullaniciyi valide ediyoruz
+        // !!! authenticationManager uzerinden kullaniciyi valide ediyoruz
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
-
-        //valide edilen kullaniciyi Context e atiyoruz
+        // !!! valide edilen kullanici Context e atiliyor
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        //JWT Token olusturuyoruz
+        // !!! JWT token olusturuluyor
         String token = "Bearer " + jwtUtils.generateJwtToken(authentication);
-
-        //login islemi gerceklestirilen kullaniciya ulasiyoruz
+        // !!! login islemini gerceklestirilen kullaniciya ulasiliyor
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        //Response olarak login islemini yapan kullaniciyi donecegimiz gerekli fieldlari setliyoruz
-        //GrantedAuthority turundeki role yapisini String turune ceviriyoruz
+        // !!!  Response olarak login islemini yapan kullaniciyi donecegiz gerekli fieldlar setleniyor
+        // !!! GrantedAuthority turundeki role yapisini String turune ceviriliyor
         Set<String> roles = userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
-
-        //bir kullanicinin birden fazla rolu olmayacagi icin ilk indexli elemani aliyoruz
+        //!!! bir kullanicinin birden fazla rolu olmayacagi icin ilk indexli elemani aliyoruz
         Optional<String> role = roles.stream().findFirst();
-
-        //burada login islemini gerceklestiren kullanici bilgilerini response olarak
-        // gonderecegimiz icin, gerekli bilgileri setliyoruz.
+        // burada login islemini gerceklestiren kullanici bilgilerini response olarak
+        // gonderecegimiz icin, gerekli bilgiler setleniyor.
         AuthResponse.AuthResponseBuilder authResponse = AuthResponse.builder();
         authResponse.username(userDetails.getUsername());
         authResponse.token(token.substring(7));
         authResponse.name(userDetails.getName());
         authResponse.ssn(userDetails.getSsn());
-
-        //role bilgisi varsa response nesnesindeki degiskeni setliyoruz   --> !! Burayi sor!!
+        // !!! role bilgisi varsa response nesnesindeki degisken setleniyor
         role.ifPresent(authResponse::role);
-
-        //AuthResponse nesnesini ResponseEntity ile donduruyoruz
+        // !!! AuthResponse nesnesi ResponseEntity ile donduruyoruz
         return ResponseEntity.ok(authResponse.build());
-
     }
 
-
-
-    // odev  -->   updatePassword  -> controller ve service
+    // Not: updatePassword() *****************************************
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest, HttpServletRequest request) {
 
         String userName = (String) request.getAttribute("username");
         User user = userRepository.findByUsername(userName);
-
-        // Builtin attribute: Datalarının Değişmesi istenmeyen bir objenin builtIn değeri true olur --> !! burayi sor!!
+        // !!! Builtin attribute: Datalarının Değişmesi istenmeyen bir objenin builtIn değeri true olur.
         if(Boolean.TRUE.equals(user.getBuilt_in())) { // null değerleriyle çalışırken güvenli bir yöntemdir. Boolean.TRUE.equals
             throw new BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
         }
-
-        // Eski password bilgisi dogru mu kontrolu yapiyoruz
+        // !!! Eski sifre bilgisi dogrumu kontrolu
         if(!passwordEncoder.matches(updatePasswordRequest.getOldPassword(),user.getPassword())) {
             throw new BadRequestException(ErrorMessages.PASSWORD_NOT_MATCHED);
         }
-
-        //yeni sifre hashlenerek kaydediliyor
+        // !!! yeni sifre hashlenerek Kaydediliyor
         String hashedPassword=  passwordEncoder.encode(updatePasswordRequest.getNewPassword());
 
         user.setPassword(hashedPassword);
         userRepository.save(user);
-
     }
 }

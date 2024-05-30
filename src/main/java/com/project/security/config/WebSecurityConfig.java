@@ -22,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
 @Configuration
-@EnableGlobalMethodSecurity(proxyTargetClass = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
@@ -41,16 +41,11 @@ public class WebSecurityConfig {
                 .authorizeRequests().antMatchers(AUTH_WHITE_LIST).permitAll()
                 .anyRequest().authenticated();
 
-        http.headers().frameOptions().sameOrigin(); // clickjacking onlemek icin
-
-        //provider
+        http.headers().frameOptions().sameOrigin(); // ClickJacking tarzi saldirilari onlemek icin yazildi
         http.authenticationProvider(authenticationProvider());
-
-        //filter
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-
     }
 
     @Bean
@@ -65,10 +60,11 @@ public class WebSecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
+
     }
 
     @Bean
@@ -93,20 +89,14 @@ public class WebSecurityConfig {
     }
 
 
-    private static final String[] AUTH_WHITE_LIST ={
+    private static final String[] AUTH_WHITE_LIST = {
             "/",
             "index.html",
             "/images/**",
             "/css/**",
             "/js/**",
-            "contactMessages/save",
+            "/contactMessages/save",
             "/auth/login"
     };
 
-
-
 }
-
-
-
-

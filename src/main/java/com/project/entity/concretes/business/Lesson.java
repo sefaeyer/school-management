@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
 
 @Data
@@ -30,10 +31,4 @@ public class Lesson {
     @JsonIgnore
     @ManyToMany(mappedBy = "lessons", cascade = CascadeType.REMOVE)
     private Set<LessonProgram> lessonPrograms;
-
-
-
-
-
-
 }

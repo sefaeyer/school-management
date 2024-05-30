@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-import javax.validation.constraints.NotNull;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,5 +17,4 @@ public class ResponseMessage<E> {
     private E object;
     private String message;
     private HttpStatus httpStatus;
-
 }

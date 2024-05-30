@@ -1,4 +1,5 @@
 package com.project.entity.concretes.business;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.entity.concretes.user.User;

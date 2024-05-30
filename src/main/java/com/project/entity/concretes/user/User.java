@@ -19,8 +19,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
 public class User {
 
@@ -55,6 +55,7 @@ public class User {
     private Boolean built_in;
 
     private String motherName;
+
     private String fatherName;
 
     private int studentNumber;
@@ -63,10 +64,11 @@ public class User {
 
     private Boolean isAdvisor;
 
-    private Long advisorTeacherId; //ogrenciler icin olusturuldu
+    private Long advisorTeacherId; // bu Ogrenciler icin lazim, kendi rehber ogretmeninin
+    // id si buraya yazilacak
 
     @Enumerated(EnumType.STRING)
-    private Gender gender; // MALE, male, Male, MaLe
+    private Gender gender; // MALE , male , Male , MalE
 
     @OneToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -87,16 +89,10 @@ public class User {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "meet_student_table",
+            name ="meet_student_table",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "meet_id")
     )
     private List<Meet> meetList;
-
-
-
-
-
-
 
 }
