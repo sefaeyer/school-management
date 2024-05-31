@@ -269,4 +269,45 @@ Caused by: java.lang.NullPointerException: Cannot invoke "com.project.repository
 "2024-05-31 00:27:54,921 INFO  [main] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean:Closing JPA EntityManagerFactory for persistence unit 'default'
 ""2024-05-31 00:27:54,924 INFO  [main] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Shutdown initiated...
 ""2024-05-31 00:27:54,928 INFO  [main] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Shutdown completed.
+""2024-05-31 00:34:16,800 INFO  [main] com.project.SchoolManagementApplication:Starting SchoolManagementApplication using Java 17.0.10 on HP-SEFAPC with PID 22156 (C:\Users\Sefa\Downloads\school-management\school-management\target\classes started by Sefa in C:\Users\Sefa\Downloads\school-management\school-management)
+""2024-05-31 00:34:16,803 INFO  [main] com.project.SchoolManagementApplication:No active profile set, falling back to 1 default profile: "default"
+""2024-05-31 00:34:17,837 INFO  [main] org.springframework.data.repository.config.RepositoryConfigurationDelegate:Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+""2024-05-31 00:34:17,956 INFO  [main] org.springframework.data.repository.config.RepositoryConfigurationDelegate:Finished Spring Data repository scanning in 107 ms. Found 3 JPA repository interfaces.
+""2024-05-31 00:34:18,803 INFO  [main] org.springframework.boot.web.embedded.tomcat.TomcatWebServer:Tomcat initialized with port(s): 8080 (http)
+""2024-05-31 00:34:18,820 INFO  [main] org.apache.catalina.core.StandardService:Starting service [Tomcat]
+""2024-05-31 00:34:18,820 INFO  [main] org.apache.catalina.core.StandardEngine:Starting Servlet engine: [Apache Tomcat/9.0.68]
+""2024-05-31 00:34:18,974 INFO  [main] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]:Initializing Spring embedded WebApplicationContext
+""2024-05-31 00:34:18,975 INFO  [main] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:Root WebApplicationContext: initialization completed in 2112 ms
+""2024-05-31 00:34:19,163 INFO  [main] org.hibernate.jpa.internal.util.LogHelper:HHH000204: Processing PersistenceUnitInfo [name: default]
+""2024-05-31 00:34:19,256 INFO  [main] org.hibernate.Version:HHH000412: Hibernate ORM core version 5.6.12.Final
+""2024-05-31 00:34:19,473 INFO  [main] org.hibernate.annotations.common.Version:HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+""2024-05-31 00:34:19,638 INFO  [main] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Starting...
+""2024-05-31 00:34:19,886 INFO  [main] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Start completed.
+""2024-05-31 00:34:19,913 INFO  [main] org.hibernate.dialect.Dialect:HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL81Dialect
+""2024-05-31 00:34:21,175 INFO  [main] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+""2024-05-31 00:34:21,183 INFO  [main] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean:Initialized JPA EntityManagerFactory for persistence unit 'default'
+""2024-05-31 00:34:22,114 WARN  [main] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+""2024-05-31 00:34:22,335 INFO  [main] org.springframework.security.web.DefaultSecurityFilterChain:Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3e0a112f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@abe7d36, org.springframework.security.web.context.SecurityContextPersistenceFilter@24ee6faa, org.springframework.security.web.header.HeaderWriterFilter@633c0a61, org.springframework.web.filter.CorsFilter@7da1ef46, org.springframework.security.web.authentication.logout.LogoutFilter@c7443f, com.project.security.jwt.AuthTokenFilter@744f0e0b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6b756a62, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@394b9e22, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@740fccd2, org.springframework.security.web.session.SessionManagementFilter@32121140, org.springframework.security.web.access.ExceptionTranslationFilter@5c43cb12, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5b9df3b3]
+""2024-05-31 00:34:22,559 INFO  [main] org.springframework.boot.web.embedded.tomcat.TomcatWebServer:Tomcat started on port(s): 8080 (http) with context path ''
+""2024-05-31 00:34:22,570 INFO  [main] com.project.SchoolManagementApplication:Started SchoolManagementApplication in 6.39 seconds (JVM running for 7.044)
+""2024-05-31 00:34:22,671 INFO  [main] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener:
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+""2024-05-31 00:34:22,697 ERROR [main] org.springframework.boot.SpringApplication:Application run failed
+"java.lang.IllegalStateException: Failed to execute CommandLineRunner
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:774)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:755)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295)
+	at com.project.SchoolManagementApplication.main(SchoolManagementApplication.java:30)
+Caused by: java.lang.NullPointerException: Cannot invoke "com.project.repository.user.UserRepository.existsByUsername(String)" because "this.userRepository" is null
+	at com.project.service.validator.UniquePropertyValidator.checkDuplicate(UniquePropertyValidator.java:20)
+	at com.project.service.user.UserService.saveUser(UserService.java:48)
+	at com.project.SchoolManagementApplication.run(SchoolManagementApplication.java:79)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:771)
+	... 5 common frames omitted
+"2024-05-31 00:34:22,722 INFO  [main] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean:Closing JPA EntityManagerFactory for persistence unit 'default'
+""2024-05-31 00:34:22,724 INFO  [main] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Shutdown initiated...
+""2024-05-31 00:34:22,728 INFO  [main] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Shutdown completed.
 "
