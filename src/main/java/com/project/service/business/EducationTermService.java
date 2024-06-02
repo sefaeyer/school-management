@@ -126,12 +126,9 @@ public class EducationTermService {
         // mevcut mu kontrolu
         EducationTerm educationTerm = isEducationTermExist(id);
 
-        if (
-                (educationTerm.get)
-        )
 
 
-
+        return null;
     }
 
 }
