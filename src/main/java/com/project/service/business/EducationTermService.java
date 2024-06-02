@@ -111,4 +111,29 @@ public class EducationTermService {
         Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
         return educationTermRepository.findAll(pageable).map(educationTermMapper::mapEducationTermToEducationTermResponse);
     }
+
+    public String deleteLessonById(Long id) {
+
+        //mevcut mu kontrolu
+        isEducationTermExist(id);
+
+        educationTermRepository.deleteById(id);
+        return SuccessMessages.EDUCATION_TERM_DELETE;
+    }
+
+    public EducationTermResponse updateEducationTermById(Long id, EducationTermRequest request) {
+
+        // mevcut mu kontrolu
+        EducationTerm educationTerm = isEducationTermExist(id);
+
+        if (
+                (educationTerm.get)
+        )
+
+
+
+    }
+
 }
+
+

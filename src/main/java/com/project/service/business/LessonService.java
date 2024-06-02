@@ -10,9 +10,15 @@ import com.project.payload.request.business.LessonRequest;
 import com.project.payload.response.business.LessonResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.repository.business.LessonRepository;
+import com.project.service.helper.MethodHelper;
+import com.project.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +26,7 @@ public class LessonService {
 
     private final LessonRepository lessonRepository;
     private final LessonMapper lessonMapper;
+    private final PageableHelper pageableHelper;
 
 
     public ResponseMessage<LessonResponse> saveLesson(LessonRequest lessonRequest) {
@@ -83,4 +90,17 @@ public class LessonService {
                 new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_LESSON_MESSAGE,id)));
     }
 
+    public Page<LessonResponse> getAllWithPage(int page, int size, String sort, String type) {
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort,type);
+        return lessonRepository.findAll(pageable).map(lessonMapper::mapLessonToLessonResponse);
+    }
+
+    public String deleteLessonById(Long id) {
+        // silinecek lesson mevcut mu
+        isLessonExistById(id);
+
+        lessonRepository.deleteById(id);
+        return SuccessMessages.LESSON_DELETE;
+
+    }
 }

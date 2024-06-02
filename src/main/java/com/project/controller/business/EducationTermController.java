@@ -1,11 +1,14 @@
 package com.project.controller.business;
 
 import com.project.payload.request.business.EducationTermRequest;
+import com.project.payload.request.business.LessonRequest;
 import com.project.payload.response.business.EducationTermResponse;
+import com.project.payload.response.business.LessonResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.service.business.EducationTermService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,9 +61,20 @@ public class EducationTermController {
 
 
     //  --  ODEV  --  deleteById  ************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    @DeleteMapping("/delete/{id}") // http://localhost:8080/educationTerms/delete/3 + DELETE
+    public ResponseEntity<String> deleteById(@PathVariable Long id ){
+        return ResponseEntity.ok(educationTermService.deleteLessonById(id));
+    }
+
+
 
     //  --  ODEV  --  updateById  ************************************************
-
-
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    @PutMapping("/update/{educationTermId}") //http://localhost:8080/educationTerms/update/1 = PUT
+    public ResponseEntity<EducationTermResponse> updateEducationTermById(@PathVariable Long id,
+                                                                         @RequestBody EducationTermRequest request){
+        return ResponseEntity.ok(educationTermService.updateEducationTermById(id, request));
+    }
 
 }
