@@ -43,9 +43,9 @@ public class LessonProgramController {
 
 
     //herhangi bir kullanici atamasi yapilmamis butun dersprogramlari getirecegiz
-    @GetMapping("/getAllUnassigned")  // http://localhost:8080/lessonPrograms/getAllUnassigned
+    @GetMapping("/getAllUnAssigned")  // http://localhost:8080/lessonPrograms/getAllUnAssigned
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
-    public List<LessonProgramResponse> getAllUnassigned(){
+    public List<LessonProgramResponse> getAllUnAssigned(){
         return lessonProgramService.getAllUnassigned();
     }
 

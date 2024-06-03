@@ -97,17 +97,28 @@ public class LessonService {
         return lessonRepository.findAll(pageable).map(lessonMapper::mapLessonToLessonResponse);
     }
 
-    public String deleteLessonById(Long id) {
-        // silinecek lesson mevcut mu
+    // Not: deleteById() *********************************************************************
+    public ResponseMessage<?> deleteLessonById(Long id){
         isLessonExistById(id);
-
         lessonRepository.deleteById(id);
-        return SuccessMessages.LESSON_DELETE;
 
+        return ResponseMessage.builder()
+                .message(SuccessMessages.LESSON_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
     }
 
 
-    // Not: getLessonsByIdList() *********************************************************************
+
+    // Not: getAllWithPage() *********************************************************************
+    public Page<LessonResponse> findLessonByPage (int page, int size, String sort, String type){
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
+        return lessonRepository.findAll(pageable).map(lessonMapper::mapLessonToLessonResponse);
+    }
+
+
+
+    // Not: getLessonsByIdList() ********************************************************************
     public Set<Lesson> getLessonByLessonIdSet(Set<Long> idSet) {
         return idSet.stream()
                 .map(this::isLessonExistById)

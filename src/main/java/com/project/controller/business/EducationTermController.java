@@ -62,19 +62,19 @@ public class EducationTermController {
 
     //  --  ODEV  --  deleteById  ************************************************
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-    @DeleteMapping("/delete/{id}") // http://localhost:8080/educationTerms/delete/3 + DELETE
-    public ResponseEntity<String> deleteById(@PathVariable Long id ){
-        return ResponseEntity.ok(educationTermService.deleteEducationTermById(id));
+    @DeleteMapping("/delete/{id}") // http://localhost:8080/educationTerms/delete/1
+    public ResponseMessage<?>deleteEducationTermById(@PathVariable Long id){
+        return educationTermService.deleteEducationTermById(id);
     }
 
 
 
     //  --  ODEV  --  updateById  ************************************************
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-    @PutMapping("/update/{educationTermId}") //http://localhost:8080/educationTerms/update/1 = PUT
-    public ResponseEntity<EducationTermResponse> updateEducationTermById(@PathVariable Long id,
-                                                                         @RequestBody @Valid EducationTermRequest request){
-        return ResponseEntity.ok(educationTermService.updateEducationTermById(id, request));
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+    @PutMapping("/update/{id}")// http://localhost:8080/educationTerms/update/1 + JSON
+    public ResponseMessage<EducationTermResponse>updateEducationTerm(@PathVariable Long id,
+                                                                     @RequestBody @Valid EducationTermRequest educationTermRequest ){
+        return educationTermService.updateEducationTerm(id,educationTermRequest);
     }
 
 }
