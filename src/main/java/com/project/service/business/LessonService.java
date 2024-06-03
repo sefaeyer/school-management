@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -102,5 +104,13 @@ public class LessonService {
         lessonRepository.deleteById(id);
         return SuccessMessages.LESSON_DELETE;
 
+    }
+
+
+    // Not: getLessonsByIdList() *********************************************************************
+    public Set<Lesson> getLessonByLessonIdSet(Set<Long> idSet) {
+        return idSet.stream()
+                .map(this::isLessonExistById)
+                .collect(Collectors.toSet());
     }
 }

@@ -64,7 +64,7 @@ public class EducationTermController {
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     @DeleteMapping("/delete/{id}") // http://localhost:8080/educationTerms/delete/3 + DELETE
     public ResponseEntity<String> deleteById(@PathVariable Long id ){
-        return ResponseEntity.ok(educationTermService.deleteLessonById(id));
+        return ResponseEntity.ok(educationTermService.deleteEducationTermById(id));
     }
 
 
@@ -73,7 +73,7 @@ public class EducationTermController {
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     @PutMapping("/update/{educationTermId}") //http://localhost:8080/educationTerms/update/1 = PUT
     public ResponseEntity<EducationTermResponse> updateEducationTermById(@PathVariable Long id,
-                                                                         @RequestBody EducationTermRequest request){
+                                                                         @RequestBody @Valid EducationTermRequest request){
         return ResponseEntity.ok(educationTermService.updateEducationTermById(id, request));
     }
 

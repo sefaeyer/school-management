@@ -112,7 +112,7 @@ public class EducationTermService {
         return educationTermRepository.findAll(pageable).map(educationTermMapper::mapEducationTermToEducationTermResponse);
     }
 
-    public String deleteLessonById(Long id) {
+    public String deleteEducationTermById(Long id) {
 
         //mevcut mu kontrolu
         isEducationTermExist(id);
@@ -126,10 +126,17 @@ public class EducationTermService {
         // mevcut mu kontrolu
         EducationTerm educationTerm = isEducationTermExist(id);
 
+        validateEducationTermDates(request);
+
 
 
         return null;
     }
+
+    public EducationTerm findEducationTermById(Long educationTermId){
+        return isEducationTermExist(educationTermId);
+    }
+
 
 }
 
