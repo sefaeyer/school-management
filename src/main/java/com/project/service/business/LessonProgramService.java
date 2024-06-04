@@ -70,7 +70,7 @@ public class LessonProgramService {
                 .collect(Collectors.toList());
     }
 
-    public List<LessonProgramResponse> getAllUnAssigned() {
+    public List<LessonProgramResponse> getAllUnassigned() {
 
         return lessonProgramRepository.findByUsers_IdNull()
                 .stream()
