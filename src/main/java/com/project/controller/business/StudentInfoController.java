@@ -1,6 +1,7 @@
 package com.project.controller.business;
 
 import com.project.payload.request.business.StudentInfoRequest;
+import com.project.payload.request.business.UpdateStudentInfoRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.StudentInfoResponse;
 import com.project.service.business.StudentInfoService;
@@ -29,10 +30,34 @@ public class StudentInfoController {
 
 
     // ODEV -> Delete() *********************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','TEACHER')")
+    @DeleteMapping("/delete/{studentInfoId}")// http://localhost:8080/studentInfo/delete/1
+    public ResponseMessage delete(@PathVariable Long studentInfoId){
+        return studentInfoService.deleteStudentInfo(studentInfoId);
+    }
 
     // ODEV -> getAllWithPage() *************************************************************
+    @GetMapping("/getAllStudentInfoByPage") // http://localhost:8080/lessonPrograms/getAllLessonProgramByPage?page=0&size=1&sort=id&type=desc
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    public Page<StudentInfoResponse> getAllStudentInfoByPage(
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "sort") String sort,
+            @RequestParam(value = "type") String type
+    ){
+        return studentInfoService.getAllStudentInfoByPage(page,size,sort,type);
+    }
+
 
     // ODEV -> Update() *********************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','TEACHER')")
+    @PutMapping("/update/{studentInfoId}") // http://localhost:8080/studentInfo/update/1
+    //student id bilgisine ihtiyac olmadigi icin, icinde studentId olmayan yeni bir DTO yazdik ???
+    public ResponseMessage<StudentInfoResponse> update(@RequestBody @Valid UpdateStudentInfoRequest studentInfoRequest,
+                                                         @PathVariable Long studentInfoId){
+        return studentInfoService.update(studentInfoRequest, studentInfoId);
+    }
+
 
 
 

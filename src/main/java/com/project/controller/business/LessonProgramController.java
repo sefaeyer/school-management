@@ -70,7 +70,8 @@ public class LessonProgramController {
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") String sort,
-            @RequestParam(value = "type") String type){
+            @RequestParam(value = "type") String type
+    ){
         return lessonProgramService.getAllLessonProgramByPage(page,size,sort,type);
     }
 

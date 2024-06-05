@@ -6,6 +6,7 @@ public class ErrorMessages {
 
 
 
+
     private ErrorMessages() {
     }
 
@@ -42,6 +43,9 @@ public class ErrorMessages {
     public static final String LESSON_PROGRAM_NOT_FOUND_MESSAGE = "Error: Lesson Program with id %s not found";
 
     public static final String MEET_NOT_FOUND_MESSAGE = "Error: Meet with id %s not found";
+    public static final String MEET_HOURS_CONFLICT = "meet hours has conflict with existing meets" ;
+
+    public static final String STUDENT_INFO_NOT_FOUND = "Error: Student Info with id %s not found";
 
 
 }
