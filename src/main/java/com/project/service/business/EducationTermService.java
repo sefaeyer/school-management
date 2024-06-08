@@ -30,7 +30,7 @@ public class EducationTermService {
 
 
     // Not: save() *******************************************************************************
-    public ResponseMessage<EducationTermResponse> saveEducationTerm(EducationTermRequest educationTermRequest) {
+    public ResponseMessage<EducationTermResponse> saveEducationTerm(EducationTermRequest educationTermRequest){
         validateEducationTermDates(educationTermRequest);
         EducationTerm savedEducationTerm =
                 educationTermRepository.save(educationTermMapper.mapEducationTermRequestToEducationTerm(educationTermRequest));

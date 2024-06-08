@@ -25,7 +25,7 @@ public class EducationTermController {
     // Not: ODEVV save() *******************************************************************************
     @PostMapping("/save")// http://localhost:8080/educationTerms/save + JSON + POST
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
-    public ResponseMessage<EducationTermResponse> saveEducationTerm(@RequestBody @Valid
+    public ResponseMessage<EducationTermResponse>saveEducationTerm(@RequestBody @Valid
                                                                    EducationTermRequest educationTermRequest){
         return educationTermService.saveEducationTerm(educationTermRequest);
     }

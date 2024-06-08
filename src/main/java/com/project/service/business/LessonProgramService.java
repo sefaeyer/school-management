@@ -97,9 +97,19 @@ public class LessonProgramService {
     }
 
 
+    public Set<LessonProgram> getLessonProgramById(Set<Long> lessonIdSet){
+       Set<LessonProgram> lessonPrograms = lessonProgramRepository.getLessonProgramByLessonProgramIdList(lessonIdSet);
+
+       if(lessonPrograms.isEmpty()){
+           throw new ResourceNotFoundException(ErrorMessages.NOT_FOUND_LESSON_PROGRAM_MESSAGE_WITHOUT_ID_INFO);
+       }
+       return lessonPrograms;
+    }
+
+
     private LessonProgram isLessonProgramExistById(Long id) {
         return lessonProgramRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(String.format(ErrorMessages.LESSON_PROGRAM_NOT_FOUND_MESSAGE, id)));
+                new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_LESSON_PROGRAM_MESSAGE, id)));
     }
 
     public List<LessonProgramResponse> getAllAssigned() {

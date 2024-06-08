@@ -180,8 +180,8 @@ public class StudentInfoService {
                         educationTerm,
                         note,
                         noteAverage);
-        studentInfoForUpdate.setStudent(studentInfo.getStudent());
-        studentInfoForUpdate.setTeacher(studentInfo.getTeacher());
+        studentInfoForUpdate.setStudent(studentInfo.getStudent()); // onemli !!! -> bu setleme olmasaydi null kalirdi. cunku dto dan geliyor
+        studentInfoForUpdate.setTeacher(studentInfo.getTeacher()); // onemli !!! -> bu setleme olmasaydi null kalirdi. cunku dto dan geliyor
         StudentInfo updatedStudentInfo = studentInfoRepository.save(studentInfoForUpdate);
 
         return ResponseMessage.<StudentInfoResponse>builder()
