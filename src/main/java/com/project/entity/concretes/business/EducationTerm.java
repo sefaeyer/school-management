@@ -49,3 +49,5 @@ public class EducationTerm {
     private List<LessonProgram> lessonProgram;
 }
 
+
+
